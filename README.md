@@ -1,4 +1,4 @@
-# AI Customer Support Ticket Automation v3
+# AI Customer Support Ticket Automation 
 
 > Production-grade AI workflow that ingests customer support emails, classifies
 > them with an LLM (xAI **Grok** by default, also supports OpenAI / Claude /
