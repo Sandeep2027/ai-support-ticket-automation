@@ -1,0 +1,14 @@
+{
+  "title": "PII-Heavy: Billing Dispute with Sensitive Data",
+  "description": "Customer shares credit card, phone, and SSN-like data while disputing a charge and asking for a refund. Tests PII redaction (the redacted_body field should have all PII masked).",
+  "category_hint": "Refund Request",
+  "expected_priority": "Critical",
+  "expected_spam": false,
+  "expected_language": "en",
+  "sender_name": "Rebecca Liu",
+  "sender_email": "rebecca.liu@globaltrade-llc.com",
+  "from": "Rebecca Liu <rebecca.liu@globaltrade-llc.com>",
+  "subject": "Unauthorized charge on my card — need immediate investigation",
+  "body": "Hello billing team,\n\nI just noticed an unauthorized charge of $1,247.50 on my credit card ending in 4242 from your company. I did not make this purchase.\n\nMy details:\n- Card: 4532-1234-5678-4242, expires 09/27\n- Phone: +1 (415) 555-0199\n- SSN on file: 123-45-6789\n- Account email: rebecca.liu@globaltrade-llc.com\n- IBAN: GB82WEST12345698765432\n- Last known IP: 192.168.1.42\n\nPlease investigate immediately and refund the charge. This is high priority — I am disputing this with my bank as well.\n\nRebecca Liu\nVP Finance, GlobalTrade LLC\nrebecca.liu@globaltrade-llc.com",
+  "received_at": "2026-07-05T16:45:00Z"
+}

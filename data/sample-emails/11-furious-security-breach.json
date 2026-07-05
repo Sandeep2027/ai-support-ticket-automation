@@ -1,0 +1,14 @@
+{
+  "title": "Furious Customer — Security Breach",
+  "description": "Angry customer reporting a suspected security breach. Tests Negative sentiment, Critical priority, security language.",
+  "category_hint": "Technical Support",
+  "expected_priority": "Critical",
+  "expected_spam": false,
+  "expected_language": "en",
+  "sender_name": "Jonathan Reeves",
+  "sender_email": "jreeves@nexustech.io",
+  "from": "Jonathan Reeves <jreeves@nexustech.io>",
+  "subject": "SECURITY BREACH — your platform leaked our customer data!!!",
+  "body": "I am FURIOUS. We just discovered that your platform has been leaking our customer PII to other tenants for the past WEEK. This is an absolute disaster and frankly it is unacceptable for a so-called enterprise platform.\n\nI demand an immediate explanation. Our legal team is already drafting a notice. We have a regulatory obligation to report this within 72 hours under GDPR and we will be naming your company in that report.\n\nThis is a P0 security incident. I expect a senior engineer to call me within the hour. My cell is on file.\n\nI cannot express how disappointed I am. We trusted you with our data.\n\nJonathan Reeves\nCTO, Nexus Technologies\nP.S. — Do NOT try to downplay this. We have screenshots.",
+  "received_at": "2026-07-05T17:00:00Z"
+}

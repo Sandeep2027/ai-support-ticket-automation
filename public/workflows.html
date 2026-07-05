@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflows — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div><div class="brand-title">AI Support Desk</div><div class="brand-sub">Workflow Automation Rules</div></div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html" class="active">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status">…</div>
+  </header>
+
+  <main class="container">
+    <div class="grid-2">
+      <section class="card">
+        <h3>New Workflow Rule</h3>
+        <form id="wf-form">
+          <div class="field"><label>Name</label><input type="text" name="name" required /></div>
+          <div class="field"><label>Description</label><input type="text" name="description" /></div>
+          <div class="field-grid">
+            <div class="field">
+              <label>Trigger Event</label>
+              <select name="triggerEvent" id="wf-trigger"></select>
+            </div>
+            <div class="field"><label>Priority (lower = runs first)</label><input type="number" name="priority" value="100" /></div>
+          </div>
+          <div class="field">
+            <label>Conditions (JSON array)</label>
+            <textarea name="conditions" rows="4" placeholder='[{"field":"category","op":"eq","value":"Technical Support"},{"field":"priority","op":"eq","value":"Critical"}]'></textarea>
+            <div class="muted" style="font-size:11px;margin-top:4px">Ops: eq, neq, in, not_in, contains, gt, lt, gte, lte, regex, is_set, is_not_set</div>
+          </div>
+          <div class="field">
+            <label>Actions (JSON array)</label>
+            <textarea name="actions" rows="4" placeholder='[{"type":"add_tag","params":{"tagName":"critical"}},{"type":"send_notification","params":{"event":"critical_priority","message":"Critical ticket created"}}]'></textarea>
+            <div class="muted" style="font-size:11px;margin-top:4px">Types: set_priority, set_category, set_status, set_team, assign_agent, add_tag, add_note, send_notification, call_webhook, set_sla, set_custom_field, escalate</div>
+          </div>
+          <div class="row"><button class="btn" type="submit">Create Rule</button><span id="wf-status" class="muted"></span></div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>How It Works</h3>
+        <div style="font-size:13px;line-height:1.6">
+          <p><strong>1. Triggers</strong> — when an event fires (e.g. ticket_created), the engine finds all active rules for that event.</p>
+          <p><strong>2. Conditions</strong> — every condition must match (AND logic). Empty conditions = always match.</p>
+          <p><strong>3. Actions</strong> — executed in order. Failed actions are logged but don't stop the rule.</p>
+          <p><strong>4. Audit</strong> — every execution is logged in workflow_executions for traceability.</p>
+          <p><strong>Safety</strong> — max 50 actions per rule, infinite-loop prevention, 10ms condition timeout.</p>
+        </div>
+        <div style="margin-top:14px">
+          <h4 style="font-size:13px;margin:0 0 8px">Example: Auto-escalate Critical tickets</h4>
+          <pre class="code" style="font-size:11px">{
+  "triggerEvent": "ticket_created",
+  "conditions": [
+    {"field": "priority", "op": "eq", "value": "Critical"}
+  ],
+  "actions": [
+    {"type": "add_tag", "params": {"tagName": "critical"}},
+    {"type": "send_notification", "params": {"event": "critical_priority", "message": "Critical ticket created"}},
+    {"type": "escalate", "params": {"level": 1}}
+  ]
+}</pre>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head"><h3>Active Rules</h3><button class="btn btn-ghost" id="refresh">↻ Refresh</button></div>
+      <div class="table-wrap">
+        <table class="table" id="rules-table">
+          <thead><tr><th>Name</th><th>Trigger</th><th>Conditions</th><th>Actions</th><th>Priority</th><th>Executions</th><th>Last Run</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/workflows.js"></script>
+</body>
+</html>

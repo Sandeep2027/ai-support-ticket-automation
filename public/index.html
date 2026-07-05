@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support Desk — AI Ticket Automation</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div>
+        <div class="brand-title">AI Support Desk</div>
+        <div class="brand-sub">Customer Support Ticket Automation</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/" class="active">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status" title="AI provider status">checking AI…</div>
+  </header>
+
+  <main class="container">
+    <!-- KPI cards -->
+    <section class="kpi-grid" id="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Total Tickets</div><div class="kpi-value" id="kpi-total">—</div></div>
+      <div class="kpi"><div class="kpi-label">Last 24h</div><div class="kpi-value" id="kpi-recent">—</div></div>
+      <div class="kpi"><div class="kpi-label">Open / Critical</div><div class="kpi-value" id="kpi-open-crit">—</div></div>
+      <div class="kpi"><div class="kpi-label">SLA Breached</div><div class="kpi-value kpi-warn" id="kpi-sla">—</div></div>
+      <div class="kpi"><div class="kpi-label">Escalated</div><div class="kpi-value" id="kpi-esc">—</div></div>
+      <div class="kpi"><div class="kpi-label">Spam Detected</div><div class="kpi-value" id="kpi-spam">—</div></div>
+      <div class="kpi"><div class="kpi-label">Avg AI Confidence</div><div class="kpi-value" id="kpi-conf">—</div></div>
+    </section>
+
+    <!-- Charts row -->
+    <section class="grid-2">
+      <div class="card">
+        <h3>By Status</h3>
+        <div id="chart-status" class="bar-chart"></div>
+      </div>
+      <div class="card">
+        <h3>By Category</h3>
+        <div id="chart-category" class="bar-chart"></div>
+      </div>
+      <div class="card">
+        <h3>By Priority</h3>
+        <div id="chart-priority" class="bar-chart"></div>
+      </div>
+      <div class="card">
+        <h3>By Team</h3>
+        <div id="chart-team" class="bar-chart"></div>
+      </div>
+      <div class="card">
+        <h3>By Sentiment</h3>
+        <div id="chart-sentiment" class="bar-chart"></div>
+      </div>
+      <div class="card">
+        <h3>By Language</h3>
+        <div id="chart-language" class="bar-chart"></div>
+      </div>
+    </section>
+
+    <!-- SLA breaches -->
+    <section class="card" id="sla-card" style="display:none">
+      <h3 style="color:#dc2626">SLA Breaches</h3>
+      <div id="sla-list"></div>
+    </section>
+
+    <!-- Quick actions -->
+    <section class="card">
+      <h3>One-Click Sample Test Ingestion</h3>
+      <p class="muted">Load a pre-built sample support email and watch the full AI pipeline run end-to-end (classify → route → acknowledge → ticket created).</p>
+      <div class="sample-grid" id="sample-grid">Loading samples…</div>
+    </section>
+
+    <!-- Recent tickets -->
+    <section class="card">
+      <div class="card-head">
+        <h3>Recent Tickets</h3>
+        <a href="/tickets.html" class="btn btn-ghost">View all →</a>
+      </div>
+      <div class="table-wrap">
+        <table class="table" id="recent-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Subject</th><th>Sender</th><th>Category</th>
+              <th>Priority</th><th>Status</th><th>Team</th><th>Conf.</th><th>Received</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

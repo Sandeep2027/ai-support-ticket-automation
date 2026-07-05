@@ -1,0 +1,12 @@
+{
+  "title": "Billing — Double Charge Refund Request",
+  "description": "Frustrated customer asking for a refund after being charged twice. Tests Refund Request category, Negative sentiment, Finance routing.",
+  "category_hint": "Refund Request",
+  "expected_priority": "High",
+  "sender_name": "Marcus Johnson",
+  "sender_email": "marcus.j@gmail.com",
+  "from": "Marcus Johnson <marcus.j@gmail.com>",
+  "subject": "I was charged TWICE for my subscription — unacceptable",
+  "body": "Hello,\n\nI am extremely disappointed. I just checked my credit card statement and I see TWO charges for $49 each on June 28 from your company. I only have ONE subscription. This is ridiculous.\n\nI want an immediate refund for the duplicate charge. I expect a response today — this kind of error is unacceptable for a paid service.\n\nI have attached my invoice (INV-2026-0091) for your reference.\n\nMarcus Johnson\nAccount: marcus.j@gmail.com\nCard ending: 4242",
+  "received_at": "2026-07-05T08:15:00Z"
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Bug Report — Dashboard Export Broken",
+  "description": "Detailed bug report with reproduction steps. Tests Bug Report category, Product Team routing, Medium priority.",
+  "category_hint": "Bug Report",
+  "expected_priority": "Medium",
+  "sender_name": "Priya Patel",
+  "sender_email": "priya.patel@brightlabs.io",
+  "from": "Priya Patel <priya.patel@brightlabs.io>",
+  "subject": "Bug: Dashboard CSV export produces empty file when filtering by date range",
+  "body": "Hi team,\n\nI'd like to report a bug in the web dashboard (Team Plan).\n\nSteps to reproduce:\n1. Go to Reports > Sales\n2. Apply a custom date filter (e.g. last 30 days)\n3. Click 'Export CSV'\n4. The downloaded file is 0 bytes and contains no data\n\nExpected: CSV file with the filtered rows.\nActual: Empty file.\n\nThis happens consistently in Chrome 126 and Firefox 127. Export works fine when no date filter is applied, so the issue seems specific to filtered exports.\n\nBrowser: Chrome 126.0.6478.126\nOS: macOS 14.5\nUser: priya.patel@brightlabs.io\nAccount: Bright Labs (Team Plan)\n\nHappy to provide a screen recording if helpful.\n\nThanks,\nPriya",
+  "received_at": "2026-07-05T09:30:00Z"
+}

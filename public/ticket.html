@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ticket — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div>
+        <div class="brand-title">AI Support Desk</div>
+        <div class="brand-sub" id="ticket-id-sub">Ticket detail</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status" title="AI provider status">checking AI…</div>
+  </header>
+
+  <main class="container" id="ticket-root">
+    <p>Loading ticket…</p>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/ticket-detail.js"></script>
+</body>
+</html>

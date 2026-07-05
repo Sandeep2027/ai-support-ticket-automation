@@ -1,0 +1,12 @@
+{
+  "title": "Critical: Production API Outage",
+  "description": "Urgent technical support request — API is down for the customer's production environment. Tests Critical priority + Technical Support category.",
+  "category_hint": "Technical Support",
+  "expected_priority": "Critical",
+  "sender_name": "Sarah Chen",
+  "sender_email": "sarah.chen@acmecorp.com",
+  "from": "Sarah Chen <sarah.chen@acmecorp.com>",
+  "subject": "URGENT: API returning 500 errors since 2am — production down",
+  "body": "Hi support team,\n\nThis is urgent. Since 2:00 AM UTC our production environment has been unable to call your API. Every request to https://api.yourservice.com/v1/customers returns a 500 Internal Server Error. We have a customer demo at 9 AM and we cannot work — this is blocking everything.\n\nWe tried:\n- Reauthenticating with our API key\n- Switching to our backup key\n- Testing from different regions\n\nAll return the same 500 error. This is a P1 incident for us.\n\nPlease escalate immediately.\n\nSarah Chen\nSr. Engineering Lead, Acme Corp\n+1 (415) 555-0142",
+  "received_at": "2026-07-05T06:42:00Z"
+}

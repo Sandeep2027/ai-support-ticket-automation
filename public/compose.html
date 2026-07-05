@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingest Email — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div>
+        <div class="brand-title">AI Support Desk</div>
+        <div class="brand-sub">Ingest Email</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html" class="active">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status" title="AI provider status">checking AI…</div>
+  </header>
+
+  <main class="container">
+    <div class="grid-2">
+      <!-- Manual compose -->
+      <section class="card">
+        <h3>Compose &amp; Ingest Email</h3>
+        <p class="muted">Simulates an inbound email arriving in the support inbox. The full AI pipeline runs immediately.</p>
+        <form id="compose-form">
+          <label>From (name &lt;email&gt;)
+            <input type="text" name="from" placeholder="John Doe &lt;john@acme.com&gt;" required />
+          </label>
+          <label>Subject
+            <input type="text" name="subject" placeholder="I can't log in to my account" required />
+          </label>
+          <label>Body
+            <textarea name="body" rows="8" placeholder="Hello, since this morning I cannot log in. I get a 500 error. This is urgent — I have a demo tomorrow." required></textarea>
+          </label>
+          <div class="row">
+            <button type="submit" class="btn">Run AI Pipeline →</button>
+            <span id="compose-status" class="muted"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Webhook / .eml ingestion -->
+      <section class="card">
+        <h3>Upload .eml File</h3>
+        <p class="muted">Drag a saved <code>.eml</code> file here — parsed as a real RFC 822 message.</p>
+        <form id="eml-form">
+          <input type="file" id="eml-file" accept=".eml,.msg" />
+          <div class="row">
+            <button type="submit" class="btn">Ingest .eml →</button>
+            <span id="eml-status" class="muted"></span>
+          </div>
+        </form>
+
+        <hr class="divider" />
+
+        <h3>Webhook Endpoint</h3>
+        <p class="muted">Point your n8n / SendGrid / Mailgun inbound parse here:</p>
+        <pre class="code">POST /webhooks/email?token=&lt;EMAIL_WEBHOOK_TOKEN&gt;
+Content-Type: application/json
+
+{
+  "from": "John Doe &lt;john@acme.com&gt;",
+  "subject": "Cannot login",
+  "body": "I get a 500 error since this morning…",
+  "receivedAt": "2026-07-05T10:00:00Z",
+  "attachments": []
+}</pre>
+      </section>
+    </div>
+
+    <!-- Result preview -->
+    <section class="card" id="result-card" style="display:none">
+      <h3>Pipeline Result</h3>
+      <pre id="result-json" class="code"></pre>
+      <a id="result-link" class="btn" href="#">Open ticket →</a>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/compose.js"></script>
+</body>
+</html>

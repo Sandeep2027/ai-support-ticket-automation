@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div><div class="brand-title">AI Support Desk</div><div class="brand-sub">Reports &amp; Analytics</div></div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html" class="active">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status">…</div>
+  </header>
+
+  <main class="container">
+    <section class="kpi-grid" id="kpi-grid">
+      <div class="kpi"><div class="kpi-label">SLA Compliance</div><div class="kpi-value" id="kpi-sla">—</div></div>
+      <div class="kpi"><div class="kpi-label">Avg First Response</div><div class="kpi-value" id="kpi-fr">—</div></div>
+      <div class="kpi"><div class="kpi-label">Avg Resolution</div><div class="kpi-value" id="kpi-res">—</div></div>
+      <div class="kpi"><div class="kpi-label">Spam Rate</div><div class="kpi-value" id="kpi-spam">—</div></div>
+    </section>
+
+    <section class="card">
+      <h3>Tickets Created vs Resolved (Last 30 Days)</h3>
+      <div id="ts-chart" style="height:200px"></div>
+    </section>
+
+    <div class="grid-2">
+      <section class="card">
+        <h3>Team Workload</h3>
+        <div class="table-wrap">
+          <table class="table" id="teams-table">
+            <thead><tr><th>Team</th><th>Total</th><th>Open</th><th>Resolved</th><th>Critical Open</th><th>Escalated</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="card">
+        <h3>SLA Compliance by Priority</h3>
+        <div class="table-wrap">
+          <table class="table" id="sla-table">
+            <thead><tr><th>Priority</th><th>Total</th><th>Breached</th><th>Compliance</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h3>Agent Leaderboard</h3>
+      <div class="table-wrap">
+        <table class="table" id="agents-table">
+          <thead><tr><th>Agent</th><th>Team</th><th>Assigned</th><th>Resolved</th><th>Open</th><th>Resolution Rate</th><th>Avg First Response</th><th>Avg Resolution</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Spam Detection</h3>
+      <div id="spam-stats"></div>
+    </section>
+
+    <section class="card">
+      <h3>Prometheus Metrics Endpoint</h3>
+      <p class="muted">Scrape <code>/api/metrics</code> with Prometheus or curl:</p>
+      <pre class="code">curl http://localhost:3000/api/metrics</pre>
+      <a class="btn btn-ghost" href="/api/metrics" target="_blank">Open /api/metrics →</a>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/reports.js"></script>
+</body>
+</html>

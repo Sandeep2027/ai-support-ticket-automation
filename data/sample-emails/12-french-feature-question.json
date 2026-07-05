@@ -1,0 +1,14 @@
+{
+  "title": "French: Feature Question (Multi-language)",
+  "description": "Customer writing in French with a feature question. Tests language detection (fr) and Low priority feature inquiry.",
+  "category_hint": "Sales Inquiry",
+  "expected_priority": "Low",
+  "expected_spam": false,
+  "expected_language": "fr",
+  "sender_name": "Sophie Dubois",
+  "sender_email": "sophie.dubois@atelier-creation.fr",
+  "from": "Sophie Dubois <sophie.dubois@atelier-creation.fr>",
+  "subject": "Question sur les fonctionnalités de votre offre Pro",
+  "body": "Bonjour,\n\nJe vous contacte pour avoir plus d'informations sur votre offre Pro. Est-il possible d'avoir un essai gratuit de 14 jours ?\n\nAussi, j'aimerais savoir si vous proposez une intégration avec Slack et Notion.\n\nMerci par avance pour votre aide.\n\nCordialement,\nSophie Dubois\nAtelier Création\nParis, France",
+  "received_at": "2026-07-05T17:30:00Z"
+}

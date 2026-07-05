@@ -1,0 +1,45 @@
+{
+  "name": "ai-support-ticket-automation",
+  "version": "3.0.0",
+  "description": "Production-grade AI-powered customer support ticket automation system. Ingests support emails, classifies them with an LLM, routes to the right team, sends acknowledgments, and tracks the full ticket lifecycle with an audit trail.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed.js",
+    "test:e2e": "node scripts/test-runner.js",
+    "test:unit": "node scripts/unit-tests.js",
+    "test:integration": "node scripts/integration-tests.js",
+    "test:integration:start": "node server.js & sleep 3 && node scripts/integration-tests.js; kill %1 2>/dev/null",
+    "test:all": "node scripts/unit-tests.js && node scripts/test-runner.js",
+    "db:init": "node scripts/seed.js --init-only"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^2.2.0",
+    "nodemailer": "^6.9.15",
+    "uuid": "^10.0.0"
+  },
+  "keywords": [
+    "ai",
+    "customer-support",
+    "ticketing",
+    "llm",
+    "openai",
+    "automation",
+    "n8n",
+    "workflow"
+  ],
+  "author": "AI Engineer Candidate",
+  "license": "MIT"
+}

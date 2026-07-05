@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knowledge Base — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div><div class="brand-title">AI Support Desk</div><div class="brand-sub">Knowledge Base (RAG)</div></div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html" class="active">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status">…</div>
+  </header>
+
+  <main class="container">
+    <div class="grid-2">
+      <section class="card">
+        <h3>New Article</h3>
+        <form id="kb-form">
+          <div class="field"><label>Title</label><input type="text" name="title" required /></div>
+          <div class="field"><label>Summary</label><input type="text" name="summary" placeholder="One-line summary" /></div>
+          <div class="field">
+            <label>Category</label>
+            <select name="category">
+              <option>Technical Support</option><option>Billing</option>
+              <option>Sales Inquiry</option><option>Feature Request</option>
+              <option>Bug Report</option><option>Account Access</option>
+              <option>Refund Request</option><option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="field"><label>Tags (comma-sep)</label><input type="text" name="tags" placeholder="api, error, 500" /></div>
+          <div class="field"><label>Content (Markdown)</label><textarea name="content" rows="8" placeholder="# Heading&#10;Step-by-step instructions..."></textarea></div>
+          <div class="row"><button class="btn" type="submit">Publish Article</button><span id="kb-status" class="muted"></span></div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>KB Stats</h3>
+        <div id="kb-stats"></div>
+        <div class="field" style="margin-top:14px"><label>Search</label><input type="text" id="kb-search" placeholder="Search articles…" /></div>
+        <div id="kb-search-results" style="margin-top:10px"></div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head"><h3>Articles</h3><button class="btn btn-ghost" id="refresh">↻ Refresh</button></div>
+      <div id="kb-list"></div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/kb.js"></script>
+</body>
+</html>

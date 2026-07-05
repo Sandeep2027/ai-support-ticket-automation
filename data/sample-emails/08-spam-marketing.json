@@ -1,0 +1,14 @@
+{
+  "title": "Spam: Marketing Link-Farming",
+  "description": "Pure marketing spam with link farming. Tests spam detection auto-rejection (>90 score). Should NOT create a ticket.",
+  "category_hint": null,
+  "expected_priority": null,
+  "expected_spam": true,
+  "expected_language": "en",
+  "sender_name": "Best Deals",
+  "sender_email": "deals@spam-network.example",
+  "from": "Best Deals <deals@spam-network.example>",
+  "subject": "CONGRATULATIONS YOU WON!!! Click here for your free iPhone",
+  "body": "Dear Friend,\n\nCONGRATULATIONS! You have been selected as our WINNER of the month!\n\nClick here to claim your FREE iPhone 15 Pro Max: http://spam-link-1.example/?id=xyz\nClick here for $1000 gift card: http://spam-link-2.example/?id=abc\nClick here for free vacation: http://spam-link-3.example/\n\nThis is a limited time offer. Act now! 100% free, no obligation.\n\nBuy now before stock runs out!\n\nBest Deals Team",
+  "received_at": "2026-07-05T14:00:00Z"
+}

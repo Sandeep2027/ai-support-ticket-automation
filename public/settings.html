@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div><div class="brand-title">AI Support Desk</div><div class="brand-sub">Settings &amp; Admin</div></div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html" class="active">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status">…</div>
+  </header>
+
+  <main class="container">
+    <div class="grid-2">
+      <!-- System Health -->
+      <section class="card">
+        <div class="card-head"><h3>System Health (Deep)</h3><button class="btn btn-ghost btn-sm" id="refresh-health">↻</button></div>
+        <div id="health-list">Loading…</div>
+      </section>
+
+      <!-- Database Stats -->
+      <section class="card">
+        <h3>Database</h3>
+        <div id="db-stats">Loading…</div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn btn-sm" onclick="vacuum()">VACUUM</button>
+          <button class="btn btn-ghost btn-sm" onclick="createBackup()">Backup Now</button>
+          <span id="db-action-status" class="muted"></span>
+        </div>
+        <div style="margin-top:14px">
+          <h4 style="font-size:13px;margin:0 0 6px">Backups</h4>
+          <div id="backups-list" style="max-height:200px;overflow:auto"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Settings table -->
+    <section class="card">
+      <div class="card-head">
+        <h3>System Settings</h3>
+        <select id="settings-category" onchange="loadSettings()"><option value="">All Categories</option></select>
+      </div>
+      <div class="table-wrap">
+        <table class="table" id="settings-table">
+          <thead><tr><th>Key</th><th>Value</th><th>Description</th><th>Category</th><th>Updated</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Audit log search -->
+    <section class="card">
+      <h3>Audit Log Search</h3>
+      <form class="filters" id="audit-form" onsubmit="return false">
+        <input type="text" id="audit-ticket" placeholder="Ticket ID" />
+        <input type="text" id="audit-action" placeholder="Action" />
+        <input type="text" id="audit-actor" placeholder="Actor" />
+        <input type="text" id="audit-value" placeholder="Value contains" />
+        <button class="btn" onclick="searchAudit()">Search</button>
+        <a class="btn btn-ghost" id="audit-export" href="#">Export CSV</a>
+      </form>
+      <div class="table-wrap" style="margin-top:14px">
+        <table class="table" id="audit-table">
+          <thead><tr><th>When</th><th>Ticket</th><th>Action</th><th>Field</th><th>Old → New</th><th>Actor</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/settings.js"></script>
+</body>
+</html>

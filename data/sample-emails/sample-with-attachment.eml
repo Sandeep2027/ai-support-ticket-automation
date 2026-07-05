@@ -1,0 +1,28 @@
+From: "Linda Foster" <linda.foster@meridian-graphics.com>
+To: support@example.com
+Subject: Bug Report: Screenshot of dashboard rendering issue
+Date: Sat, 05 Jul 2026 15:10:00 +0000
+Message-ID: <D8fLx7nZ9p0@mail.meridian-graphics.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="BOUNDARY123"
+
+--BOUNDARY123
+Content-Type: text/plain; charset=utf-8
+
+Hi,
+
+Reporting a UI bug. When I open the analytics dashboard with a date range of more than 90 days, the chart renders incorrectly (bars overlap and labels disappear). See attached screenshot.
+
+Browser: Safari 17.5 on macOS 14.5
+Dashboard: /analytics/overview
+Plan: Pro
+
+Linda Foster
+Designer, Meridian Graphics
+--BOUNDARY123
+Content-Type: text/plain; name="screenshot-info.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="screenshot-info.txt"
+
+VGhpcyBpcyBhIHBsYWNlaG9sZGVyIGZvciB0aGUgc2NyZWVuc2hvdCBhbmQgaW5jbHVkZWQgZm9yIHRlc3RpbmcgYXR0YWNobWVudCBleHRyYWN0aW9uLgo=
+--BOUNDARY123--

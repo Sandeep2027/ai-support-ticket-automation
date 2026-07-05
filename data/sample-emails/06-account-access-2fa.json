@@ -1,0 +1,12 @@
+{
+  "title": "Account Access — 2FA Lockout",
+  "description": "User locked out due to lost 2FA device. Tests Account Access category, Customer Success routing, High priority.",
+  "category_hint": "Account Access",
+  "expected_priority": "High",
+  "sender_name": "Tom O'Brien",
+  "sender_email": "tom.obrien@quartzindustries.com",
+  "from": "Tom O'Brien <tom.obrien@quartzindustries.com>",
+  "subject": "Lost my phone — cannot login due to 2FA, need account reset",
+  "body": "Hi support,\n\nI lost my phone yesterday and I can no longer access my account because I cannot complete the two-factor authentication (2FA) step. I have an important deadline tomorrow and I need to access the platform urgently.\n\nMy account email is tom.obrien@quartzindustries.com.\n\nCan you please help me reset my 2FA so I can log back in? I am happy to verify my identity with a government-issued ID or any other method you require.\n\nI tried using the backup codes but I cannot find where I saved them (my fault). Please help.\n\nTom O'Brien\nOperations Manager\nQuartz Industries",
+  "received_at": "2026-07-05T12:55:00Z"
+}

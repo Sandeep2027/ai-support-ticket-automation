@@ -1,0 +1,12 @@
+{
+  "title": "Sales Inquiry — Enterprise Quote",
+  "description": "Inbound sales prospect asking about enterprise pricing. Tests Sales Inquiry category, Sales routing, positive intent.",
+  "category_hint": "Sales Inquiry",
+  "expected_priority": "Medium",
+  "sender_name": "Elena Volkov",
+  "sender_email": "elena.volkov@northwind-partners.com",
+  "from": "Elena Volkov <elena.volkov@northwind-partners.com>",
+  "subject": "Enterprise plan quote for 800 seats + SSO + audit logs",
+  "body": "Hello sales team,\n\nI'm evaluating your platform for our organization, Northwind Partners. We are a financial services firm with ~800 employees and we're looking for an enterprise solution.\n\nOur requirements:\n- 800 seats\n- SAML SSO (Okta)\n- Audit logs (>= 12 months retention)\n- Data residency in EU (Frankfurt)\n- Custom contract / MSA\n- DPA / GDPR\n\nCould you send me a quote, your enterprise feature comparison, and availability for a 45-minute technical demo next week? Tuesday or Thursday afternoon CET works best.\n\nThanks,\nElena Volkov\nProcurement Lead\nNorthwind Partners\ngithub.com/evolkov-nw",
+  "received_at": "2026-07-05T11:20:00Z"
+}

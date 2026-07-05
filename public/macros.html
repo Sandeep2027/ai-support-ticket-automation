@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macros — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div><div class="brand-title">AI Support Desk</div><div class="brand-sub">Canned Response Macros</div></div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html" class="active">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status">…</div>
+  </header>
+
+  <main class="container">
+    <div class="grid-2">
+      <section class="card">
+        <h3>New Macro</h3>
+        <form id="macro-form">
+          <div class="field-grid">
+            <div class="field"><label>Name</label><input type="text" name="name" required /></div>
+            <div class="field"><label>Category (optional)</label>
+              <select name="category">
+                <option value="">All categories</option>
+                <option>Technical Support</option><option>Billing</option>
+                <option>Sales Inquiry</option><option>Feature Request</option>
+                <option>Bug Report</option><option>Account Access</option>
+                <option>Refund Request</option><option>General Inquiry</option>
+              </select>
+            </div>
+            <div class="field"><label>Team (optional)</label>
+              <select name="team">
+                <option value="">All teams</option>
+                <option>Technical Support</option><option>Finance</option>
+                <option>Sales</option><option>Customer Success</option><option>Product Team</option>
+              </select>
+            </div>
+            <div class="field"><label>Tags (comma-sep)</label><input type="text" name="tags" /></div>
+          </div>
+          <div class="field"><label>Description</label><input type="text" name="description" /></div>
+          <div class="field"><label>Subject Template (optional)</label><input type="text" name="subjectTemplate" placeholder="Re: {{ticket_id}} — {{issue_summary}}" /></div>
+          <div class="field">
+            <label>Body Template (Markdown — supports variables)</label>
+            <textarea name="bodyTemplate" rows="10" placeholder="Hello {{first_name}},&#10;&#10;Thank you for reaching out about your {{category}} issue. We've received your ticket {{ticket_id}} and our {{assigned_team}} team will review it.&#10;&#10;Best regards,&#10;Support Team"></textarea>
+          </div>
+          <div class="muted" style="font-size:12px;margin-bottom:8px">
+            Variables: <code>{{customer_name}}</code> <code>{{first_name}}</code> <code>{{ticket_id}}</code> <code>{{category}}</code> <code>{{priority}}</code> <code>{{assigned_team}}</code> <code>{{company}}</code> <code>{{product_service}}</code> <code>{{today}}</code> <code>{{custom.field_name}}</code>
+          </div>
+          <div class="row"><button class="btn" type="submit">Create Macro</button><span id="macro-status" class="muted"></span></div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>Macro Library</h3>
+        <input type="text" id="macro-search" placeholder="Search macros…" style="margin-bottom:14px" />
+        <div id="macro-list">Loading…</div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/macros.js"></script>
+</body>
+</html>

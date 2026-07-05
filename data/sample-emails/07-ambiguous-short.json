@@ -1,0 +1,12 @@
+{
+  "title": "Edge Case — Empty Body & No Subject Signal",
+  "description": "Email with very short body and ambiguous content. Tests graceful fallback to General Inquiry, low confidence, and extraction_warnings population.",
+  "category_hint": "General Inquiry",
+  "expected_priority": "Low",
+  "sender_name": "",
+  "sender_email": "random.user@example.com",
+  "from": "random.user@example.com",
+  "subject": "Hello",
+  "body": "Hi,\n\nJust wanted to know more.\n\nThanks.",
+  "received_at": "2026-07-05T13:40:00Z"
+}

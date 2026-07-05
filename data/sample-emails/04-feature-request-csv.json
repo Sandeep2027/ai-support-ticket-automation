@@ -1,0 +1,12 @@
+{
+  "title": "Feature Request — Bulk User Import",
+  "description": "Polite feature request with use case. Tests Feature Request category, Product Team routing, Low priority, Positive sentiment.",
+  "category_hint": "Feature Request",
+  "expected_priority": "Low",
+  "sender_name": "Diego Ramirez",
+  "sender_email": "diego.ramirez@summit-edu.org",
+  "from": "Diego Ramirez <diego.ramirez@summit-edu.org>",
+  "subject": "Feature suggestion: bulk user import via CSV",
+  "body": "Hi there,\n\nFirst off — we love the product. Our team at Summit Education has been using it for 6 months and it has transformed how we manage student projects.\n\nI have a feature request: would it be possible to add a bulk user import via CSV? At the start of each semester we onboard ~300 students, and adding them one-by-one is tedious. A CSV upload with columns like name, email, role, and group would be amazing.\n\nIf this is already on the roadmap, great — no worries. If not, please consider it.\n\nThanks for building such a great tool!\n\nDiego Ramirez\nDirector of Educational Technology\nSummit Education",
+  "received_at": "2026-07-05T10:05:00Z"
+}

@@ -1,0 +1,5 @@
+# Uploads directory
+
+Email attachments are persisted here at runtime, organised as
+`<ticketId>/<uuid>-<safeName>`. This file exists so the directory is tracked
+by git; the contents are gitignored.

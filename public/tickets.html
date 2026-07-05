@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Tickets — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div>
+        <div class="brand-title">AI Support Desk</div>
+        <div class="brand-sub">All Tickets</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html" class="active">Tickets</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status" title="AI provider status">checking AI…</div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h3>Filters</h3>
+      <form class="filters" id="filter-form" onsubmit="return false">
+        <input type="text" id="f-q"      placeholder="Search subject / sender / ID…" />
+        <select id="f-status">
+          <option value="">All Statuses</option>
+          <option>Open</option><option>In Progress</option>
+          <option>Waiting for Customer</option><option>Resolved</option>
+          <option>Closed</option><option>Rejected</option>
+        </select>
+        <select id="f-priority">
+          <option value="">All Priorities</option>
+          <option>Critical</option><option>High</option><option>Medium</option><option>Low</option>
+        </select>
+        <select id="f-category">
+          <option value="">All Categories</option>
+          <option>Technical Support</option><option>Billing</option>
+          <option>Sales Inquiry</option><option>Feature Request</option>
+          <option>Bug Report</option><option>Account Access</option>
+          <option>Refund Request</option><option>General Inquiry</option>
+        </select>
+        <select id="f-team">
+          <option value="">All Teams</option>
+          <option>Technical Support</option><option>Finance</option>
+          <option>Sales</option><option>Customer Success</option><option>Product Team</option>
+        </select>
+        <button class="btn" id="f-apply">Apply</button>
+        <button class="btn btn-ghost" id="f-clear">Clear</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h3>Tickets <span class="muted" id="count-label"></span></h3>
+        <button class="btn btn-ghost" id="refresh">↻ Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table class="table" id="tickets-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Subject</th><th>Sender</th><th>Category</th>
+              <th>Priority</th><th>Status</th><th>Team</th><th>Conf.</th><th>Received</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/tickets.js"></script>
+</body>
+</html>

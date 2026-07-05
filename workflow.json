@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "name": "AI Customer Support Ticket Automation v2",
+  "version": "2.0.0",
+  "description": "Production-grade AI workflow with xAI Grok as default LLM. Pipeline: ingest → spam detect → AI analysis → PII redact → route → workload-balanced agent assignment → KB RAG suggestions → persist → ack → audit → notify → escalation sweep → manual review → resolve. 16 database tables, 60+ REST endpoints, 7 frontend pages, Prometheus metrics, multi-channel notifications.",
+  "active": true,
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Email Trigger",
+      "type": "trigger",
+      "subtype": "webhook",
+      "description": "Receives inbound emails via POST /webhooks/email (JSON), /webhooks/email/eml (.eml upload), /api/ingest (public demo), or /api/ingest/eml. Compatible with n8n Email Trigger, SendGrid Inbound Parse, Mailgun Routes.",
+      "implementation": "src/routes/webhooks.js + src/routes/api.js",
+      "config": {
+        "auth": "X-Webhook-Token or ?token= (EMAIL_WEBHOOK_TOKEN) for /webhooks/*; X-API-Key for /api/* when AUTH_ENABLED=true",
+        "rateLimit": "120 req/min webhooks, 240 req/min api"
+      },
+      "next": ["2"]
+    },
+    {
+      "id": "2",
+      "name": "Parse Email",
+      "type": "function",
+      "description": "Normalises webhook payload / .eml string into InboundEmail shape.",
+      "implementation": "src/services/emailService.js → parseWebhookPayload / parseEmlString",
+      "next": ["3"]
+    },
+    {
+      "id": "3",
+      "name": "Validate Inbound",
+      "type": "function",
+      "description": "Validates sender email format, presence of subject/body, attachment size limits. Skipped messages are logged to inbox_log.",
+      "implementation": "src/services/emailService.js → validateInbound",
+      "onError": { "action": "respond 400 + log to inbox_log", "next": [] },
+      "next": ["4"]
+    },
+    {
+      "id": "4",
+      "name": "Spam Detection (NEW v2)",
+      "type": "ai",
+      "subtype": "llm_chat",
+      "description": "Calls AI (Grok-2-mini by default) with SYSTEM_PROMPT_SPAM to score 0-100. Above SPAM_AUTO_REJECT=90 → reject entirely (no ticket). Above SPAM_THRESHOLD=70 → flag as spam. Falls back to pattern-based mock.",
+      "implementation": "src/services/aiService.js → detectSpam",
+      "config": {
+        "model": "AI_SECONDARY_MODEL or AI_MODEL",
+        "temperature": 0,
+        "maxTokens": 200,
+        "responseFormat": "json_object"
+      },
+      "onError": { "action": "fallback to mockSpam() — continue", "next": ["5"] },
+      "next": ["5"]
+    },
+    {
+      "id": "5",
+      "name": "Duplicate Detection",
+      "type": "function",
+      "description": "Computes fingerprint of subject+body, checks last 24h of tickets from same sender. If match, marks new ticket as duplicate_of=<existing>.",
+      "implementation": "src/services/ticketService.js → detectDuplicate",
+      "next": ["6"]
+    },
+    {
+      "id": "6",
+      "name": "AI Analysis (Grok LLM)",
+      "type": "ai",
+      "subtype": "llm_chat",
+      "description": "Calls xAI Grok (default) or other OpenAI-compatible LLM with SYSTEM_PROMPT_ANALYZE. Returns full structured JSON: customer_name, company, issue_summary, detailed_description, category, priority, sentiment, product_service, suggested_department, suggested_tags, confidence_score, extraction_warnings, spam_score, language.",
+      "implementation": "src/services/aiService.js → analyzeEmail → callLLMJson",
+      "config": {
+        "provider": "xAI Grok (default) | OpenAI | Claude | Gemini | Groq | local",
+        "model": "grok-2-latest (default)",
+        "baseUrl": "https://api.x.ai/v1",
+        "temperature": 0.2,
+        "maxTokens": 1500,
+        "timeoutMs": 30000,
+        "responseFormat": "json_object"
+      },
+      "onError": {
+        "action": "retry 3× exponential backoff → fallback to mockAnalyze() → continue",
+        "next": ["7"]
+      },
+      "next": ["7"]
+    },
+    {
+      "id": "7",
+      "name": "Validate & Normalise AI Output",
+      "type": "function",
+      "description": "Coerces every field. Fuzzy-matches category, keyword-matches priority/sentiment, dedupes tags, validates language code. Ensures result is always persistable.",
+      "implementation": "src/services/aiService.js → validateAnalysis + src/utils/validator.js",
+      "next": ["8"]
+    },
+    {
+      "id": "8",
+      "name": "PII Redaction (NEW v2)",
+      "type": "function",
+      "description": "Replaces emails, phones, credit cards, SSNs, IBANs, IPs in body with [REDACTED_*] tokens. Stored separately in pii_redacted_body column.",
+      "implementation": "src/services/aiService.js → redactPii",
+      "next": ["9"]
+    },
+    {
+      "id": "9",
+      "name": "Resolve Team + Best Agent (NEW v2)",
+      "type": "function",
+      "description": "Maps AI category to support team. Then finds the best agent on that team: fewest open tickets, matching skill, under max_concurrent cap.",
+      "implementation": "src/services/routingService.js + src/services/agentService.js → findBestAgent",
+      "next": ["10"]
+    },
+    {
+      "id": "10",
+      "name": "Upsert Customer Profile (NEW v2)",
+      "type": "function",
+      "description": "Deterministic ID from email hash. Increments total_tickets/open_tickets, updates last_contact_at, name, company.",
+      "implementation": "src/services/customerService.js → upsertFromEmail",
+      "next": ["11"]
+    },
+    {
+      "id": "11",
+      "name": "Persist Ticket",
+      "type": "database",
+      "subtype": "sqlite",
+      "description": "INSERT into tickets table with status=Open (or Spam), acknowledged=0, sla_due_at from priority SLA, customer_id, assigned_agent_id, language, is_spam, spam_score, pii_redacted_body. Captures raw AI response for audit.",
+      "implementation": "src/services/ticketService.js → createFromEmail",
+      "next": ["12", "13", "14", "15", "16"]
+    },
+    {
+      "id": "12",
+      "name": "Persist Attachments",
+      "type": "function",
+      "description": "Writes each attachment to uploads/<ticketId>/<uuid>-<safeName>. Path-traversal-safe.",
+      "implementation": "src/services/attachmentService.js → persistForTicket",
+      "next": []
+    },
+    {
+      "id": "13",
+      "name": "KB Article Suggestions (RAG, NEW v2)",
+      "type": "function",
+      "description": "Scores all published KB articles by category match (30pts) + tag overlap (15pts/tag) + title keyword overlap (8pts) + body keyword overlap (1pts). Top 3 cached on ticket.ai_kb_article_ids.",
+      "implementation": "src/services/kbService.js → suggestForTicket → aiService.suggestKbArticles",
+      "next": []
+    },
+    {
+      "id": "14",
+      "name": "Audit: created + classified + assigned",
+      "type": "function",
+      "description": "Appends rows to audit_trail. Append-only.",
+      "implementation": "src/services/auditService.js → record",
+      "next": []
+    },
+    {
+      "id": "15",
+      "name": "Send Acknowledgment Email",
+      "type": "email",
+      "subtype": "smtp",
+      "description": "HTML + plain-text ack to customer with ticket ID, summary, category, priority, status, ETA. Logs to console when SMTP disabled.",
+      "implementation": "src/services/ackService.js → send + buildEmail",
+      "onError": { "action": "log error, continue (non-blocking)", "next": [] },
+      "next": []
+    },
+    {
+      "id": "16",
+      "name": "Notifications (Slack/Teams/etc, NEW v2)",
+      "type": "function",
+      "description": "Fans out to configured channels: ticket_created (always), critical_priority (if Critical), spam_detected (if spam flagged). Each notification recorded in notifications table.",
+      "implementation": "src/services/notificationService.js → notify",
+      "next": []
+    },
+    {
+      "id": "17",
+      "name": "Manual Review (Web UI)",
+      "type": "human",
+      "description": "Agent opens ticket in dashboard. Can: edit fields, change status/priority/category, reassign team/agent, add notes, generate AI reply/resolution plans, escalate, merge duplicates. Every change audited.",
+      "implementation": "public/ticket.html + src/routes/api.js",
+      "next": ["18", "19", "20", "21"]
+    },
+    {
+      "id": "18",
+      "name": "AI Reply Suggestion (NEW v2)",
+      "type": "ai",
+      "subtype": "llm_chat",
+      "description": "On agent click, generates customer-facing reply grounded in suggested KB articles. Temperature 0.4.",
+      "implementation": "src/services/aiService.js → suggestReply",
+      "next": []
+    },
+    {
+      "id": "19",
+      "name": "AI Resolution Plan (NEW v2)",
+      "type": "ai",
+      "subtype": "llm_chat",
+      "description": "On agent click, generates agent-facing plan: diagnosis, ordered steps, effort, engineering flag, confidence. Cached on ticket.ai_resolution_suggestion.",
+      "implementation": "src/services/aiService.js → suggestResolution",
+      "next": []
+    },
+    {
+      "id": "20",
+      "name": "Ticket Lifecycle Transitions",
+      "type": "state_machine",
+      "description": "Open → In Progress (sets first_response_at) → Waiting for Customer → Resolved (sets resolved_at, notifies, decrements customer open count) → Closed. Rejected/Spam are terminal. Each transition audited.",
+      "implementation": "src/services/ticketService.js → update / transitionStatus",
+      "states": ["Open", "In Progress", "Waiting for Customer", "Resolved", "Closed", "Rejected", "Spam"],
+      "next": []
+    },
+    {
+      "id": "21",
+      "name": "Bulk Operations (NEW v2)",
+      "type": "function",
+      "description": "Mass-update status/priority/category/agent, bulk-close, bulk-tag, CSV export, JSON import. All operations audited with actor=system:bulk or agent:<id>.",
+      "implementation": "src/services/bulkService.js",
+      "next": []
+    },
+    {
+      "id": "22",
+      "name": "SLA Escalation Sweeper (NEW v2, scheduled)",
+      "type": "schedule",
+      "description": "Runs every 5min (configurable). Finds tickets whose sla_due_at has passed. Escalates through 3 levels: L1=notify team, L2=notify lead, L3=notify admins. Each escalation recorded in escalations table + audit_trail + notifications table.",
+      "implementation": "src/services/escalationService.js → sweep / startSweeper",
+      "config": { "intervalMin": "ESCALATION_SWEEP_MIN (default 5)" },
+      "next": []
+    },
+    {
+      "id": "23",
+      "name": "Metrics Endpoint (NEW v2)",
+      "type": "function",
+      "description": "GET /api/metrics returns Prometheus exposition format with counters (tickets_created_total, ai_calls_total, etc.) and gauges (open tickets by priority/team, escalated_open).",
+      "implementation": "src/services/metricsService.js → render",
+      "next": []
+    },
+    {
+      "id": "24",
+      "name": "Reports & Analytics (NEW v2)",
+      "type": "function",
+      "description": "Time-series (created vs resolved per day), agent leaderboard, team workload, SLA compliance by priority, sentiment trend, spam stats, response/resolution times. Exposed via /api/reports/*.",
+      "implementation": "src/services/reportService.js",
+      "next": []
+    },
+    {
+      "id": "25",
+      "name": "Customer 360 (NEW v2)",
+      "type": "function",
+      "description": "Aggregates all tickets from same email into a 360 view: profile + tickets + sentiment trend + stats. Exposed via GET /api/customers/:email.",
+      "implementation": "src/services/customerService.js → get360",
+      "next": []
+    },
+    {
+      "id": "26",
+      "name": "Knowledge Base CRUD (NEW v2)",
+      "type": "function",
+      "description": "Markdown articles with FTS5 search. CRUD via /api/kb. View count + helpful count. Used by AI Reply Suggestion and AI Resolution Plan prompts.",
+      "implementation": "src/services/kbService.js",
+      "next": []
+    },
+    {
+      "id": "27",
+      "name": "Agent Directory + API Keys (NEW v2)",
+      "type": "function",
+      "description": "CRUD agents, issue/revoke SHA-256-hashed API keys, role-based access control (admin/agent/viewer), workload metrics.",
+      "implementation": "src/services/agentService.js",
+      "next": []
+    }
+  ],
+  "edges": [
+    {"from": "1", "to": "2"},
+    {"from": "2", "to": "3"},
+    {"from": "3", "to": "4", "label": "valid"},
+    {"from": "4", "to": "5", "label": "not auto-rejected"},
+    {"from": "5", "to": "6"},
+    {"from": "6", "to": "7"},
+    {"from": "7", "to": "8"},
+    {"from": "8", "to": "9"},
+    {"from": "9", "to": "10"},
+    {"from": "10", "to": "11"},
+    {"from": "11", "to": "12"},
+    {"from": "11", "to": "13"},
+    {"from": "11", "to": "14"},
+    {"from": "11", "to": "15"},
+    {"from": "11", "to": "16"},
+    {"from": "15", "to": "17", "label": "ticket created"},
+    {"from": "17", "to": "18"},
+    {"from": "17", "to": "19"},
+    {"from": "17", "to": "20"},
+    {"from": "17", "to": "21"},
+    {"from": "22", "to": "16", "label": "escalation triggers notification"}
+  ],
+  "credentials": [
+    {"name": "GROK_API_KEY (or AI_API_KEY)", "scope": "node 4, 6, 18, 19", "description": "xAI Grok API key (starts with xai-) or any OpenAI-compatible key"},
+    {"name": "EMAIL_WEBHOOK_TOKEN", "scope": "node 1"},
+    {"name": "SMTP credentials", "scope": "node 15", "optional": true},
+    {"name": "SLACK_WEBHOOK_URL", "scope": "node 16", "optional": true},
+    {"name": "TEAMS_WEBHOOK_URL", "scope": "node 16", "optional": true},
+    {"name": "Agent API keys (sk_live_...)", "scope": "node 17, 21", "optional": true, "description": "Required only when AUTH_ENABLED=true"}
+  ],
+  "envVars": [
+    "PORT", "NODE_ENV", "CORS_ORIGIN",
+    "AI_PROVIDER", "AI_API_KEY", "GROK_API_KEY", "OPENAI_API_KEY",
+    "AI_BASE_URL", "AI_MODEL", "AI_SECONDARY_MODEL",
+    "AI_TEMPERATURE", "AI_MAX_TOKENS", "AI_TIMEOUT_MS", "AI_FORCE_MOCK",
+    "EMAIL_WEBHOOK_TOKEN", "MAX_ATTACHMENT_MB",
+    "SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USER", "SMTP_PASS", "SMTP_FROM",
+    "DB_PATH", "ROUTING_MAP",
+    "SLA_CRITICAL", "SLA_HIGH", "SLA_MEDIUM", "SLA_LOW",
+    "ESCALATION_ENABLED", "ESCALATION_SWEEP_MIN",
+    "SPAM_ENABLED", "SPAM_THRESHOLD", "SPAM_AUTO_REJECT",
+    "PII_ENABLED", "PII_REDACT_BODY",
+    "SLACK_WEBHOOK_URL", "TEAMS_WEBHOOK_URL", "DIGEST_EMAIL",
+    "AUTH_ENABLED",
+    "FEATURE_KB", "FEATURE_AUTO_RESOLUTION", "FEATURE_DUPLICATE", "FEATURE_BULK", "FEATURE_METRICS",
+    "LOG_LEVEL", "API_DISABLE_PUBLIC_INGEST"
+  ]
+}

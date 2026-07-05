@@ -1,0 +1,14 @@
+{
+  "title": "Spanish: Login Issue (Multi-language)",
+  "description": "Customer writing in Spanish about a login problem. Tests language detection (es) and bilingual handling.",
+  "category_hint": "Account Access",
+  "expected_priority": "Critical",
+  "expected_spam": false,
+  "expected_language": "es",
+  "sender_name": "Carlos Mendoza",
+  "sender_email": "carlos.mendoza@soluciones-tech.es",
+  "from": "Carlos Mendoza <carlos.mendoza@soluciones-tech.es>",
+  "subject": "Ayuda urgente — no puedo acceder a mi cuenta",
+  "body": "Hola equipo de soporte,\n\nNecesito ayuda urgente. No puedo acceder a mi cuenta desde esta mañana. Cuando intento hacer login me da un error. He intentado resetear mi contraseña pero no me llega el correo de reset.\n\nPor favor, ayúdenme lo antes posible, tengo trabajo pendiente y necesito acceder a la plataforma hoy.\n\nMi correo es carlos.mendoza@soluciones-tech.es\n\nGracias,\nCarlos Mendoza\nSoluciones Tech S.L.",
+  "received_at": "2026-07-05T15:30:00Z"
+}

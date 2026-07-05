@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agents — AI Support Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div><div class="brand-title">AI Support Desk</div><div class="brand-sub">Agents &amp; Workload</div></div>
+    </div>
+    <nav class="nav">
+      <a href="/">Dashboard</a>
+      <a href="/tickets.html">Tickets</a>
+      <a href="/agents.html" class="active">Agents</a>
+      <a href="/kb.html">Knowledge</a>
+      <a href="/reports.html">Reports</a>
+      <a href="/macros.html">Macros</a>
+      <a href="/workflows.html">Workflows</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/compose.html">Ingest</a>
+    </nav>
+    <div class="ai-status" id="ai-status">…</div>
+  </header>
+
+  <main class="container">
+    <div class="grid-2">
+      <section class="card">
+        <h3>Add Agent</h3>
+        <form id="add-form">
+          <div class="field-grid">
+            <div class="field"><label>Name</label><input type="text" name="name" required /></div>
+            <div class="field"><label>Email</label><input type="email" name="email" required /></div>
+            <div class="field">
+              <label>Team</label>
+              <select name="team">
+                <option>Technical Support</option><option>Finance</option>
+                <option>Sales</option><option>Customer Success</option><option>Product Team</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Role</label>
+              <select name="role"><option value="agent">agent</option><option value="admin">admin</option><option value="viewer">viewer</option></select>
+            </div>
+            <div class="field"><label>Max Concurrent</label><input type="number" name="maxConcurrent" value="25" min="1" max="100" /></div>
+            <div class="field"><label>Skills (comma-sep)</label><input type="text" name="skills" placeholder="Technical Support, Bug Report" /></div>
+          </div>
+          <div class="row"><button class="btn" type="submit">Create Agent</button><span id="add-status" class="muted"></span></div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>Workload</h3>
+        <div id="workload"></div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head">
+        <h3>Agents</h3>
+        <button class="btn btn-ghost" id="refresh">↻ Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table class="table" id="agents-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Team</th><th>Role</th><th>Skills</th><th>Open</th><th>Total</th><th>Resolved</th><th>API Keys</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Agent Performance Leaderboard</h3>
+      <div class="table-wrap">
+        <table class="table" id="leaderboard-table">
+          <thead><tr><th>Agent</th><th>Team</th><th>Assigned</th><th>Resolved</th><th>Open</th><th>Resolution Rate</th><th>Avg First Response</th><th>Avg Resolution</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/agents.js"></script>
+</body>
+</html>
