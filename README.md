@@ -856,10 +856,4 @@ curl http://localhost:3000/api/metrics
 
 MIT — see `package.json`.
 <<<<<<< HEAD
-#   a i - s u p p o r t - t i c k e t - a u t o m a t i o n  
- 
-=======
 #
->>>>>>> 33a19dbd32c850487a34647543832f1116cbd9dc
-#   a i - s u p p o r t - t i c k e t - a u t o m a t i o n  
- 
