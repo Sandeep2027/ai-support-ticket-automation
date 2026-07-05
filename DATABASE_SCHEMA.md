@@ -1,4 +1,4 @@
-# Database Schema (v2)
+# Database Schema 
 
 The system uses SQLite (`better-sqlite3`) with FTS5 full-text search.
 The schema is portable to Postgres / MySQL / Airtable / Notion / NocoDB — the
